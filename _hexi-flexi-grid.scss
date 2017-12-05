@@ -1,0 +1,197 @@
+//----- FUNCTIONS --------------//
+
+@function vfr($l, $c) {@return (($l/(($c * 3) + 1)) * 1.73);}
+@function hfr($l, $c) {@return (($l/(($c * 2) + 1))*.578);}
+
+@function hGridHeight($gridWidth, $rowCount, $columnCount) {
+  @return hfr($gridWidth, $columnCount) * (($rowCount * 3) + 1);}
+@function hGridWidth($gridHeight, $rowCount, $columnCount) {
+  @return vfr($gridHeight, $rowCount) * (($columnCount * 2) + 1);}
+
+@function vGridHeight($gridWidth, $rowCount, $columnCount) {
+  @return vfr($gridWidth, $columnCount) * (($rowCount * 2) + 1);}
+@function vGridWidth($gridHeight, $rowCount, $columnCount) {
+  @return hfr($gridHeight, $rowCount) * (($columnCount * 3) + 1);}
+
+@function hexRatio($num) {@return $num * 1.156;}
+@function hexRatioInv($num) {@return $num * 0.865;}
+
+@function increment($num, $pos){
+  @for $i from 1 to $num {
+    $pos: $pos + 2;}
+  @return $pos;}
+//----- MIXINS -----------------//
+
+@mixin hexContainer($gridWidth, $gridHeight, $gridOrient, $rowCount, $columnCount) {
+  @if $gridOrient == horizontal {
+    @if $gridHeight == auto {$gridHeight: hGridHeight($gridWidth, $rowCount, $columnCount)}
+    @else if $gridWidth == auto {$gridWidth: hGridWidth($gridHeight, $rowCount, $columnCount)}
+  }
+  @else if $gridOrient == vertical {
+    @if $gridHeight == auto {$gridHeight: vGridHeight($gridWidth, $rowCount, $columnCount)}
+    @else if $gridWidth == auto {$gridWidth: vGridWidth($gridHeight, $rowCount, $columnCount)}
+  }
+  height: $gridHeight;
+  width: $gridWidth;
+}
+
+@mixin hexCrop($crop, $cropFactor) {
+  position: relative;
+  @if $crop == none {
+    overflow: visible;
+  } @else if $crop == crop {
+    overflow: hidden;
+    .hexGrid {
+      @if $gridOrient == vertical {transform: scale($cropFactor)}
+      @else if $gridOrient == horizontal {transform: scale($cropFactor)}
+    }
+  }
+}
+
+@mixin hexStyle($hexShape, $gridOrient, $hexContent, $hexColor, $hexMargin, $hexSize){
+  @if $hexContent == center and $hexSize == auto {height: 100%; width: 100%;}
+  @if $hexShape == circle {
+    -webkit-clip-path: circle(46% at 50% 50%);
+    clip-path: circle(46% at 50% 50%);
+    @if $hexContent == center and $hexSize != auto {
+      @if $gridOrient == vertical {
+        height: $hexSize; width: hexRatio($hexSize)}
+      @else if $gridOrient == horizontal {
+        height: hexRatio($hexSize); width: $hexSize}
+      }
+    }
+  @else if $hexShape == hexagon {
+    @if $gridOrient == vertical {
+      @if $hexContent == center and $hexSize != auto {
+        height: $hexSize; width: hexRatio($hexSize)}
+      -webkit-clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
+      clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);}
+    @else if $gridOrient == horizontal {
+      @if $hexContent == center and $hexSize != auto  {height: hexRatio($hexSize); width: $hexSize}
+      -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+      clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);}
+  }
+  background-color: $hexColor;
+  background-size: cover;
+  @if $gridOrient == vertical {margin: (hexRatioInv($hexMargin)) $hexMargin}
+  @else if $gridOrient == horizontal {margin: $hexMargin (hexRatioInv($hexMargin))}
+}
+
+@mixin hexGrid($gridWidth,$gridHeight,$gridOrient,$columnCount, $images,
+$rowCount,$layout,$hexContent,$hexShape,$hexColor,$hexMargin,$hexCount,$hexSize) {
+  display: grid;
+  justify-items: $hexContent;
+  align-items: $hexContent;
+  @if $rowCount == auto {
+    $l: ceil($hexCount / $columnCount);
+    $rowCount: $l;}
+  @else if $columnCount == auto {
+    $l: ceil($hexCount / $rowCount);
+    $columnCount: $l;}
+  @else if $hexCount == auto {$hexCount: $rowCount * $columnCount;}
+  @if $gridOrient == horizontal {
+    @if $gridHeight == auto {$gridHeight: hGridHeight($gridWidth, $rowCount, $columnCount)}
+    @else if $gridWidth == auto {$gridWidth: hGridWidth($gridHeight, $rowCount, $columnCount)}
+  }
+  @else if $gridOrient == vertical {
+    @if $gridHeight == auto {$gridHeight: vGridHeight($gridWidth, $rowCount, $columnCount)}
+    @else if $gridWidth == auto {$gridWidth: vGridWidth($gridHeight, $rowCount, $columnCount)}
+  }
+  height: $gridHeight;
+  width: $gridWidth;
+  @include gridTemplate($gridOrient, $columnCount, $rowCount, $gridWidth, $hexCount);
+  @include layout($columnCount, $rowCount, $layout, $gridOrient, $hexCount);
+  @include imageAssigner($images, $hexCount, $layout);
+  .hex {@include hexStyle($hexShape, $gridOrient, $hexContent, $hexColor, $hexMargin, $hexSize);}
+}
+
+@mixin gridTemplate($gridOrient, $columnCount, $rowCount, $gridWidth, $hexCount) {
+  @if $gridOrient == vertical {
+    grid-template-columns: repeat($columnCount, 1fr 2fr) 1fr;
+    grid-template-rows: repeat(($rowCount*2+1), vfr($gridWidth, $columnCount));}
+  @else if $gridOrient == horizontal {
+    grid-template-columns: repeat(($columnCount*2+1), 1fr);
+    grid-template-rows: repeat($rowCount,
+      hfr($gridWidth, $columnCount) (hfr($gridWidth, $columnCount)*2)) hfr($gridWidth, $columnCount);}
+}
+
+@mixin layout($columnCount, $rowCount, $layout, $gridOrient, $hexCount){
+  @if $layout == strict {
+    @include address($columnCount, $rowCount);
+  }
+  @else if $layout == column {
+    @include address($columnCount, $rowCount, $gridOrient);
+    $c: 1; $r: 1;
+    @for $i from 1 through ($hexCount) {
+      @if $r > $rowCount {$r: 1; $c: $c+1}
+      .hex:nth-child(#{$i}) {
+        @if $gridOrient == vertical {
+          @extend .r-#{$r}, .c-#{$c}, .c-#{$c}.r-#{$r};}
+        @else if $gridOrient == horizontal {
+          @extend .r-#{$r}, .c-#{$c}, .r-#{$r}.c-#{$c};}
+        }
+      $r: $r + 1;}
+  }
+  @else if $layout == row {
+    @include address($columnCount, $rowCount, $gridOrient);
+    $c: 1; $r: 1;
+    @for $i from 1 through ($hexCount) {
+      @if $c > $columnCount {$r: $r + 1; $c: 1}
+      .hex:nth-child(#{$i}) {
+        @if $gridOrient == vertical {
+          @extend .r-#{$r}, .c-#{$c}, .c-#{$c}.r-#{$r};}
+        @else if $gridOrient == horizontal {
+          @extend .r-#{$r}, .c-#{$c}, .r-#{$r}.c-#{$c};}
+      }
+      $c: $c + 1;}
+  }
+}
+
+@mixin address($columnCount, $rowCount, $gridOrient) {
+  @if $gridOrient == vertical {
+    @for $ci from 1 to ($columnCount + 1) {
+      $cPos: 1;
+      @if $ci > 1 {$cPos: increment($ci, $cPos)}
+      .c-#{$ci} {
+        grid-column-start: $cPos;
+        grid-column-end: span 3}
+      @for $ri from 1 to ($rowCount + 1) {
+        $rPos: 1;
+        @if $ci % 2 == 0 {$rPos: 2;}
+        @if $ri > 1 {$rPos: increment($ri, $rPos)}
+        .c-#{$ci}.r-#{$ri} {
+          grid-row-start: $rPos;
+          grid-row-end: span 2}
+      }
+    }
+  }
+  @else if $gridOrient == horizontal {
+    @for $ri from 1 to ($rowCount + 1) {
+      $rPos: 1;
+      @if $ri > 1 {$rPos: increment($ri, $rPos);}
+      .r-#{$ri} {
+        grid-row-start: $rPos;
+        grid-row-end: span 3;}
+      @for $ci from 1 to ($columnCount + 1) {
+        $cPos: 1;
+        @if $ri % 2 == 0 {$cPos: 2;}
+        @if $ci > 1 {$cPos: increment($ci, $cPos);}
+        .r-#{$ri}.c-#{$ci} {
+          grid-column-start: $cPos;
+          grid-column-end: span 2;}
+      }
+    }
+  }
+}
+
+@mixin imageAssigner($images, $hexCount, $layout){
+  @if $layout != strict {
+    @for $i from 1 through length($images) {
+      .hex:nth-child(#{$i}) {background-image: url(nth($images, $i));}
+    }
+  }
+}
+
+@mixin smlBreakpoint($columns, $width){}
+@mixin medBreakpoint($columns, $width){}
+@mixin lrgBreakpoint($columns, $width){}
