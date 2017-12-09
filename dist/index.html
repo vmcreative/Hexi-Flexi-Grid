@@ -1,0 +1,547 @@
+
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hexi-Flexi-Grid</title>
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link href="https://fonts.googleapis.com/css?family=Bungee|Open+Sans:400,600|Oxygen+Mono" rel="stylesheet">
+  </head>
+<body>
+<div class="grid-y grid-frame">
+<div class="cell cell-block-container">
+<div class="cell-block-y">
+  <div id="hexGridHeader">
+    <div class="hexCrop">
+      <div class="hexContainer">
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"><span>H</span></div>
+        <div class="hex"><span>E</span></div>
+        <div class="hex"><span>X</span></div>
+        <div class="hex"><span>I</span></div>
+        <div class="hex"></div>
+        <div class="hex"><span>F</span></div>
+        <div class="hex"><span>L</span></div>
+        <div class="hex"><span>E</span></div>
+        <div class="hex"><span>X</span></div>
+        <div class="hex"><span>I</span></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+        <div class="hex"></div>
+      </div>
+    </div>
+  </div>
+<main>
+  <section class="intro">
+    <div class="textWrapper">
+<p>
+  Hexi-Flexi Grid is an SCSS component, built on the CSS Grid layout, that creates a hexagonal lattice. The mixin includes a number of customizeable settings to control the size, layout and look of the hex grid.
+  <br>
+  <a href="https://github.com/vmcreative/Hexi-Flexi-Grid">Fork on Github</a>
+</p>
+
+<h3>Features</h3>
+  <ul>
+    <li>Pure css styling, no javascript</li>
+    <li>Flexible height, width, column and row counts</li>
+    <li>Modular styling for individual cells, columns and rows</li>
+    <li>Supports auto-populating background images</li>
+    <li>Supports responsive breakpoints</li>
+  </ul>
+<h3>Browser Support</h3>
+  <ul>
+    <li>Firefox 56+</li>
+    <li>Chrome 61+</li>
+    <li>Safari 10.1+</li>
+    <li>iOS Safari 10.3+</li>
+    <li>Chrome for Android 62+</li>
+    <li>IE 11/Edge: CSS Grid is currently supported in modern IE and Edge, however Hexi-Flexi Grid makes use of CSS clip-path, which is not supported. A work-around for this would be to populate the grid with hexagonal SVG img elements, as SVG is universally supported by modern browsers.</li>
+  </ul>
+    </div>
+  </section>
+  <section class="documentation">
+    <div class="textWrapper">
+<h3><a name="content"></a> Content</h3>
+<nav>
+  <ul class="vertical-menu accordion-menu" data-accordion-menu>
+    <li><a href="#getting-started">Getting Started</a>
+      <ul class="menu vertical nested">
+        <li><a href="#html">HTML</a></li>
+        <li><a href="#scss">SCSS</a></li>
+        <li><a href="#customization">Customization</a></li>
+      </ul>
+    </li>
+    <li><a href="#grid-format">Grid Format</a>
+      <ul  class="menu vertical nested">
+        <li><a href="#grid-width">$gridWidth</a></li>
+        <li><a href="#grid-height">$gridHeight</a></li>
+        <li><a href="#column-count">$columnCount</a></li>
+        <li><a href="#row-count">$rowCount</a></li>
+        <li><a href="#hex-count">$hexCount</a></li>
+        <li><a href="#hex-layout">$hexLayout</a></li>
+        <li><a href="#grid-orient">$gridOrient</a></li>
+        <li><a href="#crop">$crop</a></li>
+        <li><a href="#crop-factor">$cropFactor</a></li>
+      </ul>
+    </li>
+    <li><a href="#hex-cell-format">Hex Cell Format</a>
+      <ul class="menu vertical nested">
+        <li><a href="#hex-content">$hexContent</a></li>
+        <li><a href="#hex-size">$hexSize</a></li>
+        <li><a href="#hex-margin">$hexMargin</a></li>
+        <li><a href="#hex-shape">$hexShape</a></li>
+        <li><a href="#hex-color">$hexColor</a></li>
+        <li><a href="#images">$images</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+    <div class="textWrapper">
+<h3><a name="getting-started"></a> Getting Started</h3>
+  <div id="hexGridDemo-1" class="demoGrid">
+  <div class="hexCrop">
+    <div class="hexContainer">
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+      <div class="hex"></div>
+    </div>
+  </div>
+  </div>
+  <p>To build the basic 3x2 hex grid shown above, follow the steps listed below.</p>
+  <h4><a name="html"></a>HTML</h4>
+    <p>Include the following nested div tree in your HTML markup at the location you want to build the hex grid. Give the top level parent a unique id.</p>
+    <p>Within the div with the class <mark>.hexContainer</mark>, include a number of divs with the class <mark>.hex</mark> equal to the number of hexagonal cells in the grid (in this case 6).</p>
+
+<div class="codeblock">
+<p>HTML</p>
+<pre><code>&lt;div id=&quot;myHexGrid&quot;&gt;
+  &lt;div class=&quot;hexCrop&quot;&gt;
+    &lt;div class=&quot;hexContainer&quot;&gt;
+      &lt;div class=&quot;hex&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;hex&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;hex&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;hex&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;hex&quot;&gt;&lt;/div&gt;
+      &lt;div class=&quot;hex&quot;&gt;&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+
+<h4><a name="scss"></a>SCSS</h4>
+<p>Include the Hexi-Flexi Grid component files in the same directory as your main SCSS file. Within your main SCSS file, import <mark>hex-style.scss</mark> above any rules that will affect the content of the grid.</p>
+
+<div class="codeblock">
+<p>SCSS (main)</p>
+<pre><code>@import 'path/to/hex-style.scss';</code></pre>
+</div>
+
+<p>Inside of <mark>hex-style</mark> is a modular block of code that contains settings for the hex grid. Set the id selector the top of the code block to match the id of the top-level parent div. </p>
+<p>If there will be multiple unique hex grids, duplicate this code block for each unique id.</p>
+
+<div class="codeblock">
+<p>SCSS (_hex-style.scss)</p>
+<pre><code>#myHexGrid {
+  $gridWidth:   20em;
+  $gridHeight:  auto;
+  $columnCount: 3;
+  $rowCount:    2;
+  $hexCount:    auto;
+  $hexLayout:   row;
+  $gridOrient:  vertical;
+  $crop:        none;
+  $cropFactor:  1;
+  $hexContent:  auto;
+  $hexSize:     auto;
+  $hexMargin:   0.5em;
+  $hexShape:    hexagon;
+  $hexColor:    #48a999;
+  $breakpoints: none;
+  $images:      none;
+
+  // ...
+
+}</code></pre>
+</div>
+
+<h4><a name="customization"></a>Customization</h4>
+<p>The grid can be assigned custom css from inside the  <mark>hex-style</mark> codeblock.</p>
+<p>Hexi-Flexi Grid assigns unique class names to each individual column, row and cell in the hex grid.
+<br>
+<mark>.c-[n]</mark> targets every cell in column [n].
+<br>
+<mark>.r-[n]</mark> targets every cell in row [n].
+<br>
+<mark>.c-[n1].r-[n2]</mark> targets the cell located at column [n1], row [n2].</p>
+
+<div class="codeblock">
+<p>SCSS (_hex-style.scss)</p>
+<pre><code>#myHexGrid {
+
+  // ...
+
+  margin: 2em;
+    // create 2em margin around the grid
+
+  .c-1 {background-color: red;}
+    // column 1 cells will be red
+
+  .r-2 {transform: scale(0.8);}
+    // row 2 cells will be 80% as large
+
+  .c-3.r-1 {opacity:0.5;}
+    // make column 3, row 1 50% opaque
+
+  // ...
+
+}</code></pre>
+</div>
+    </div>
+    <div class="textWrapper">
+<h3><a name="grid-settings"></a>Grid Settings</h3>
+<br>
+<h5><a name="grid-width"></a>$gridWidth</h5>
+<p>Set the width of the hex grid.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'auto'</td>
+      <td>The grid width will match the ratio of $gridHeight. When set to auto, $gridHeight must be explicitly set.</td>
+    </tr>
+    <tr>
+      <td><i>length</i></td>
+      <td>Explicitly set the height. Note: percent width is not supported.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="grid-height"></a>$gridHeight</h5>
+<p>Set the height of the hex grid.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'auto'</td>
+      <td>The grid height will match the ratio of $gridWidth. When set to auto, $gridWidth must be explicitly set.</td>
+    </tr>
+    <tr>
+      <td><i>length</i></td>
+      <td>Explicitly set the height. Note: percent height is not supported.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="column-count"></a>$columnCount</h5>
+<p>Set the number of columns in the hex grid.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'auto'</td>
+      <td>The column count will match the number of cells divided by the number of rows. When set to auto, $rowCount and $hexCount must be explicitly set.</td>
+    </tr>
+    <tr>
+      <td><i>number</i></td>
+      <td>Explicitly set the number of columns.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="row-count"></a>$rowCount</h5>
+<p>Set the number of rows in the hex grid.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'auto'</td>
+      <td>The row count will match the number of cells divided by the number of columns. When set to auto, $columnCount and $hexCount must be explicitly set.</td>
+    </tr>
+    <tr>
+      <td><i>number</i></td>
+      <td>Explicitly set the number of rows.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="hex-count"></a>$hexCount</h5>
+<p>Set the number of hex cells in the hex grid.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'auto'</td>
+      <td>The cell count will match the number of columns times the number of rows. When set to auto, $rowCount and $columnCount must be explicitly set.</td>
+    </tr>
+    <tr>
+      <td><i>number</i></td>
+      <td>Explicitly set the number of cells.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="hex-layout"></a>$hexLayout</h5>
+<p>Set the direction the cells will populate the grid.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'row'</td>
+      <td>Cells will populate the grid starting at the top left corner and filling in horizontally, spilling over into the next row once each has filled.</td>
+    </tr>
+    <tr>
+      <td>'column'</td>
+      <td>Cells will populate the grid starting at the top left corner and filling in vertically, spilling over into the next column once each has filled.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="grid-orient"></a>$gridOrient</h5>
+<p>Set the orientation in which the grid cells will align</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'vertical'</td>
+      <td>Columns will run in straight lines, rows will offset by one half cell.</td>
+    </tr>
+    <tr>
+      <td>'horizontal'</td>
+      <td>Rows will run in straight lines, rows will offset by one half cell.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="crop"></a>$crop</h5>
+<p>Set whether the grid will be rectangularly cropped.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'none'</td>
+      <td>The grid will be uncropped.</td>
+    </tr>
+    <tr>
+      <td>'crop'</td>
+      <td>The grid will be scaled by the factor set with $cropFactor and overflow is hidden.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="crop-factor"></a>$cropFactor</h5>
+<p>Set the amount the grid will be scaled when it is cropped.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><i>number</i></td>
+      <td>Explicitly set the crop-factor. A value of 1.2 will scale the grid by 120%</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="hex-content"></a>$hexContent</h5>
+<p>Set the behavior of the cell content.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'auto'</td>
+      <td>Cell content will stretch to cover the entire size of the cell, minus the value of $hexMargin.</td>
+    </tr>
+    <tr>
+      <td>'center'</td>
+      <td>Cell content will be centered, and will match the value of $hexSize. $hexMargin will be ignored.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="hex-size"></a>$hexSize</h5>
+<p>Set the size of the cells</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'auto'</td>
+      <td>Cells will take up 100% of the available space.</td>
+    </tr>
+    <tr>
+      <td><i>number</i></td>
+      <td>Explicitly set the cell size. Note: percent size is not supported.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="hex-margin"></a>$hexMargin</h5>
+<p>Set the size of the margins on the cells.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><i>number</i></td>
+      <td>Explicitly set the cell margin. Note: percent size is not supported.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="hex-shape"></a>$hexShape</h5>
+<p>Set the shape of the clip-mask on the cells.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>'hexagon'</td>
+      <td>Cells will be hexagonal.</td>
+    </tr>
+    <tr>
+      <td>'circle'</td>
+      <td>Cells will be circular.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="hex-color"></a>$hexColor</h5>
+<p>Set the background color of the cells.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><i>color</i></td>
+      <td>Accepts hexcode, rgb/a and named colors.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h5><a name="images"></a>$images</h5>
+<p>Set a list of files to be passed to the hex cells as background images. The files will be added to the grid according to the order specified by $gridLayout.</p>
+<p>A value of 'none' will disable $images.</p>
+<div class="codeblock">
+<p>SCSS (_hex-style.scss)</p>
+<pre><code>#myHexGrid {
+
+  // ...
+
+  $images:
+    'path/to/image-1.jpg'
+    'path/to/image-2.jpg'
+    'path/to/image-3.jpg'
+    'path/to/image-4.jpg'
+    'path/to/image-5.jpg'
+    'path/to/image-6.jpg'
+  ;
+
+  // ...
+
+}</code></pre>
+</div>
+    </div>
+  </section>
+  <footer class="cell shrink">
+    <span>Copyright (c) 2017 Vincent Martin | <a href="https://github.com/vmcreative/Hexi-Flexi-Grid">Fork on Github</a></span>
+  </footer>
+</main>
+</div>
+</div>
+</div>
+
+<script src="assets/js/app.js"></script>
+</body>
+</html>
