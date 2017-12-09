@@ -1,0 +1,77 @@
+#hexGrid {
+  height: 17.3em;
+  width: 20em; }
+  #hexGrid .hexCrop {
+    position: relative;
+    overflow: visible; }
+  #hexGrid .hexGrid {
+    display: grid;
+    justify-items: auto;
+    align-items: auto;
+    height: 17.3em;
+    width: 20em;
+    grid-template-columns: repeat(3, 1fr 2fr) 1fr;
+    grid-template-rows: repeat(5, 3.46em); }
+    #hexGrid .hexGrid .hex {
+      display: none; }
+    #hexGrid .hexGrid .c-1, #hexGrid .hexGrid .hex:nth-child(1), #hexGrid .hexGrid .hex:nth-child(4) {
+      grid-column-start: 1;
+      grid-column-end: span 3; }
+    #hexGrid .hexGrid .c-1.r-1, #hexGrid .hexGrid .hex:nth-child(1), #hexGrid .hexGrid .c-1.hex:nth-child(2), #hexGrid .hexGrid .hex:nth-child(2):nth-child(4), #hexGrid .hexGrid .c-1.hex:nth-child(3), #hexGrid .hexGrid .hex:nth-child(3):nth-child(4), #hexGrid .hexGrid .r-1.hex:nth-child(4) {
+      grid-row-start: 1;
+      grid-row-end: span 2; }
+    #hexGrid .hexGrid .c-1.r-2, #hexGrid .hexGrid .r-2.hex:nth-child(1), #hexGrid .hexGrid .hex:nth-child(1):nth-child(5), #hexGrid .hexGrid .hex:nth-child(1):nth-child(6), #hexGrid .hexGrid .hex:nth-child(4), #hexGrid .hexGrid .c-1.hex:nth-child(5), #hexGrid .hexGrid .c-1.hex:nth-child(6) {
+      grid-row-start: 3;
+      grid-row-end: span 2; }
+    #hexGrid .hexGrid .c-2, #hexGrid .hexGrid .hex:nth-child(2), #hexGrid .hexGrid .hex:nth-child(5) {
+      grid-column-start: 3;
+      grid-column-end: span 3; }
+    #hexGrid .hexGrid .c-2.r-1, #hexGrid .hexGrid .c-2.hex:nth-child(1), #hexGrid .hexGrid .hex:nth-child(1):nth-child(5), #hexGrid .hexGrid .hex:nth-child(2), #hexGrid .hexGrid .c-2.hex:nth-child(3), #hexGrid .hexGrid .hex:nth-child(3):nth-child(5), #hexGrid .hexGrid .r-1.hex:nth-child(5) {
+      grid-row-start: 2;
+      grid-row-end: span 2; }
+    #hexGrid .hexGrid .c-2.r-2, #hexGrid .hexGrid .r-2.hex:nth-child(2), #hexGrid .hexGrid .hex:nth-child(2):nth-child(4), #hexGrid .hexGrid .hex:nth-child(2):nth-child(6), #hexGrid .hexGrid .c-2.hex:nth-child(4), #hexGrid .hexGrid .hex:nth-child(5), #hexGrid .hexGrid .c-2.hex:nth-child(6) {
+      grid-row-start: 4;
+      grid-row-end: span 2; }
+    #hexGrid .hexGrid .c-3, #hexGrid .hexGrid .hex:nth-child(3), #hexGrid .hexGrid .hex:nth-child(6) {
+      grid-column-start: 5;
+      grid-column-end: span 3; }
+    #hexGrid .hexGrid .c-3.r-1, #hexGrid .hexGrid .c-3.hex:nth-child(1), #hexGrid .hexGrid .hex:nth-child(1):nth-child(6), #hexGrid .hexGrid .c-3.hex:nth-child(2), #hexGrid .hexGrid .hex:nth-child(2):nth-child(6), #hexGrid .hexGrid .hex:nth-child(3), #hexGrid .hexGrid .r-1.hex:nth-child(6) {
+      grid-row-start: 1;
+      grid-row-end: span 2; }
+    #hexGrid .hexGrid .c-3.r-2, #hexGrid .hexGrid .r-2.hex:nth-child(3), #hexGrid .hexGrid .hex:nth-child(3):nth-child(4), #hexGrid .hexGrid .hex:nth-child(3):nth-child(5), #hexGrid .hexGrid .c-3.hex:nth-child(4), #hexGrid .hexGrid .c-3.hex:nth-child(5), #hexGrid .hexGrid .hex:nth-child(6) {
+      grid-row-start: 3;
+      grid-row-end: span 2; }
+    #hexGrid .hexGrid .hex:nth-child(1) {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    #hexGrid .hexGrid .hex:nth-child(2) {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    #hexGrid .hexGrid .hex:nth-child(3) {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    #hexGrid .hexGrid .hex:nth-child(4) {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    #hexGrid .hexGrid .hex:nth-child(5) {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    #hexGrid .hexGrid .hex:nth-child(6) {
+      display: flex;
+      align-items: center;
+      justify-content: center; }
+    #hexGrid .hexGrid .hex:nth-child(1) {
+      background-image: url(none); }
+    #hexGrid .hexGrid .hex {
+      -webkit-clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
+      clip-path: polygon(75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%, 25% 0);
+      background-color: #48a999;
+      background-size: cover;
+      margin: 0.4325em 0.5em; }
+
+/*# sourceMappingURL=style.css.map */

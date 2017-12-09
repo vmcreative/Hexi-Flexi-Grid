@@ -1,0 +1,36 @@
+
+//--- IMPORT ---------------------------------//
+@import 'hexi-flexi-grid';
+
+
+//--- TEMPLATE -------------------------------//
+#hexGrid {
+//--- SETTINGS -------------- VALUES ---------//
+  $gridWidth:   20em;       // 'auto',(px,pt,r/em,vw/h)
+  $gridHeight:  auto;       // 'auto',(px,pt,r/em,vw/h)
+  $columnCount: 3;          // 'auto',(number)
+  $rowCount:    2;          // 'auto',(number)
+  $hexCount:    auto;       // 'auto',(number)
+  $hexLayout:   row;        // 'row','column','strict'
+  $gridOrient:  vertical;   // 'vertical','horizontal'
+  $crop:        none;       // 'none','crop'
+  $cropFactor:  1;          // (number)
+  $hexContent:  auto;       // 'auto','center'
+  $hexSize:     auto;       // 'auto',(px,pt,r/em,vw/h)
+  $hexMargin:   0.5em;      // (px,pt,r/em,vw/h)
+  $hexShape:    hexagon;    // 'hexagon','circle'
+  $hexColor:    #48a999;    // hexcode,rgb/a,named
+  $images:      none;
+//--- MIXINS ---------------------------------//
+  @include hexWrapper($gridWidth,$gridHeight,
+    $gridOrient,$rowCount,$columnCount);
+  .hexCrop {@include hexCrop($crop,$cropFactor)}
+  .hexGrid {@include hexContainer($gridWidth,$gridHeight,
+    $gridOrient,$columnCount, $images,$rowCount,
+    $hexLayout,$hexContent,$hexShape,$hexColor,
+    $hexMargin,$hexCount,$hexSize,)}
+//--- CUSTOM STYLES --------------------------//
+
+
+//--------------------------------------------//
+}

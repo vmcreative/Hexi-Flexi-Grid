@@ -22,7 +22,7 @@
   @return $pos;}
 //----- MIXINS -----------------//
 
-@mixin hexContainer($gridWidth, $gridHeight, $gridOrient, $rowCount, $columnCount) {
+@mixin hexWrapper($gridWidth, $gridHeight, $gridOrient, $rowCount, $columnCount) {
   @if $gridOrient == horizontal {
     @if $gridHeight == auto {$gridHeight: hGridHeight($gridWidth, $rowCount, $columnCount)}
     @else if $gridWidth == auto {$gridWidth: hGridWidth($gridHeight, $rowCount, $columnCount)}
@@ -41,9 +41,8 @@
     overflow: visible;
   } @else if $crop == crop {
     overflow: hidden;
-    .hexGrid {
-      @if $gridOrient == vertical {transform: scale($cropFactor)}
-      @else if $gridOrient == horizontal {transform: scale($cropFactor)}
+    .hexContainer {
+      transform: scale($cropFactor);
     }
   }
 }
@@ -77,8 +76,8 @@
   @else if $gridOrient == horizontal {margin: $hexMargin (hexRatioInv($hexMargin))}
 }
 
-@mixin hexGrid($gridWidth,$gridHeight,$gridOrient,$columnCount, $images,
-$rowCount,$layout,$hexContent,$hexShape,$hexColor,$hexMargin,$hexCount,$hexSize) {
+@mixin hexContainer($gridWidth,$gridHeight,$gridOrient,$columnCount, $images,$rowCount,
+$hexLayout,$hexContent,$hexShape,$hexColor,$hexMargin,$hexCount,$hexSize) {
   display: grid;
   justify-items: $hexContent;
   align-items: $hexContent;
@@ -100,8 +99,8 @@ $rowCount,$layout,$hexContent,$hexShape,$hexColor,$hexMargin,$hexCount,$hexSize)
   height: $gridHeight;
   width: $gridWidth;
   @include gridTemplate($gridOrient, $columnCount, $rowCount, $gridWidth, $hexCount);
-  @include layout($columnCount, $rowCount, $layout, $gridOrient, $hexCount);
-  @include imageAssigner($images, $hexCount, $layout);
+  @include layout($columnCount, $rowCount, $hexLayout, $gridOrient, $hexCount);
+  @include imageAssigner($images, $hexCount, $hexLayout);
   .hex {@include hexStyle($hexShape, $gridOrient, $hexContent, $hexColor, $hexMargin, $hexSize);}
 }
 
@@ -115,16 +114,20 @@ $rowCount,$layout,$hexContent,$hexShape,$hexColor,$hexMargin,$hexCount,$hexSize)
       hfr($gridWidth, $columnCount) (hfr($gridWidth, $columnCount)*2)) hfr($gridWidth, $columnCount);}
 }
 
-@mixin layout($columnCount, $rowCount, $layout, $gridOrient, $hexCount){
-  @if $layout == strict {
-    @include address($columnCount, $rowCount);
+@mixin layout($columnCount, $rowCount, $hexLayout, $gridOrient, $hexCount){
+  @if $hexLayout == strict {
+    @include address($columnCount, $rowCount, $gridOrient);
   }
-  @else if $layout == column {
+  @else if $hexLayout == column {
+    .hex {display: none}
     @include address($columnCount, $rowCount, $gridOrient);
     $c: 1; $r: 1;
     @for $i from 1 through ($hexCount) {
       @if $r > $rowCount {$r: 1; $c: $c+1}
       .hex:nth-child(#{$i}) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         @if $gridOrient == vertical {
           @extend .r-#{$r}, .c-#{$c}, .c-#{$c}.r-#{$r};}
         @else if $gridOrient == horizontal {
@@ -132,12 +135,16 @@ $rowCount,$layout,$hexContent,$hexShape,$hexColor,$hexMargin,$hexCount,$hexSize)
         }
       $r: $r + 1;}
   }
-  @else if $layout == row {
+  @else if $hexLayout == row {
+    .hex {display: none}
     @include address($columnCount, $rowCount, $gridOrient);
     $c: 1; $r: 1;
     @for $i from 1 through ($hexCount) {
       @if $c > $columnCount {$r: $r + 1; $c: 1}
       .hex:nth-child(#{$i}) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         @if $gridOrient == vertical {
           @extend .r-#{$r}, .c-#{$c}, .c-#{$c}.r-#{$r};}
         @else if $gridOrient == horizontal {
@@ -184,14 +191,10 @@ $rowCount,$layout,$hexContent,$hexShape,$hexColor,$hexMargin,$hexCount,$hexSize)
   }
 }
 
-@mixin imageAssigner($images, $hexCount, $layout){
-  @if $layout != strict {
+@mixin imageAssigner($images, $hexCount, $hexLayout){
+  @if $hexLayout != strict {
     @for $i from 1 through length($images) {
       .hex:nth-child(#{$i}) {background-image: url(nth($images, $i));}
     }
   }
 }
-
-@mixin smlBreakpoint($columns, $width){}
-@mixin medBreakpoint($columns, $width){}
-@mixin lrgBreakpoint($columns, $width){}
